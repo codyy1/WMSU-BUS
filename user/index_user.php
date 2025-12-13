@@ -137,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </p>
     
     <p style="text-align: center; margin-top: 10px;">
-        <a href="forgot_password.php" style="color: #2563eb; text-decoration: none; font-size: 14px;">Forgot Password?</a>
+        <a href="forgot_password.php" style="color: #A30000; text-decoration: none; font-size: 14px;">Forgot Password?</a>
     </p>
 </div>
 

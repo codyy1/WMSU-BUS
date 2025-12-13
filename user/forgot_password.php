@@ -54,8 +54,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['request_reset'])) {
     <title>Forgot Password - WMSU Transport</title>
     <link rel="stylesheet" href="styles/styles.css">
     <style>
-        body { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        .container { width: 100%; max-width: 400px; padding: 20px; }
+        body {
+            background-image: url('../images/wmsu_bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: -1;
+        }
+        header {
+            position: relative;
+            z-index: 10;
+        }
+        .container { width: 100%; max-width: 400px; padding: 20px; position: relative; z-index: 5; }
         .card { background: #fff; border-radius: 12px; padding: 32px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
         h1 { margin: 0 0 8px 0; font-size: 24px; color: #111827; }
         .subtitle { color: #6b7280; font-size: 14px; margin-bottom: 24px; }
@@ -80,6 +106,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['request_reset'])) {
     </style>
 </head>
 <body>
+<header>
+</header>
 <div class="container">
     <div class="card">
         <h1>Forgot Password?</h1>
