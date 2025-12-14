@@ -14,9 +14,14 @@ $totalVehicles = 0;
 $upcomingSchedules = 0;
 $totalSchedules = 0;
 $canceledSchedules = 0;
- $totalUsers = 0;
+$totalUsers = 0;
 $recentRegs = [];
 $recentAnnouncements = [];
+
+// Analytics data
+$userGrowthData = [];
+$scheduleTrendsData = [];
+$routePopularityData = [];
 
 // Wrap queries in try/catch to avoid breaking the page on DB errors
 try {
@@ -63,6 +68,39 @@ try {
         }
         $stmt->close();
     }
+
+    // User growth data (last 12 months)
+    $stmt = $conn->prepare("SELECT DATE_FORMAT(CreatedAt, '%Y-%m') AS month, COUNT(*) AS count FROM Users WHERE CreatedAt >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH) GROUP BY month ORDER BY month");
+    if ($stmt) {
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $userGrowthData[] = $row;
+        }
+        $stmt->close();
+    }
+
+    // Schedule trends data (status distribution)
+    $stmt = $conn->prepare("SELECT Status, COUNT(*) AS count FROM Schedules GROUP BY Status");
+    if ($stmt) {
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $scheduleTrendsData[] = $row;
+        }
+        $stmt->close();
+    }
+
+    // Route popularity data (schedules per route)
+    $stmt = $conn->prepare("SELECT r.RouteName, COUNT(s.ScheduleID) AS count FROM Routes r LEFT JOIN Schedules s ON r.RouteID = s.RouteID GROUP BY r.RouteID, r.RouteName ORDER BY count DESC");
+    if ($stmt) {
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $routePopularityData[] = $row;
+        }
+        $stmt->close();
+    }
 } catch (Exception $e) {
     // silently ignore here; page will show zeroed stats
 }
@@ -106,6 +144,24 @@ try {
                 <a href="manage_schedules.php" class="btn">Create/Manage Schedules</a>
                 <a href="manage_accounts.php" class="btn">Manage Accounts</a>
                 <a href="announcements.php" class="btn">Announcements</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Analytics & Statistics</h2>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap:16px; margin-top:12px;">
+                <div class="card" style="padding:16px;">
+                    <h3>User Growth (Last 12 Months)</h3>
+                    <canvas id="userGrowthChart" width="300" height="200"></canvas>
+                </div>
+                <div class="card" style="padding:16px;">
+                    <h3>Schedule Status Distribution</h3>
+                    <canvas id="scheduleTrendsChart" width="300" height="200"></canvas>
+                </div>
+                <div class="card" style="padding:16px;">
+                    <h3>Route Popularity</h3>
+                    <canvas id="routePopularityChart" width="300" height="200"></canvas>
+                </div>
             </div>
         </div>
 

@@ -1,6 +1,6 @@
-# TODO: Create User Registration Page
-
-- [x] Update admin/schema.sql to add UserRegistrations table
-- [x] Create user/register.php with registration form and logic
-- [x] Update user/index_user.php to add link to registration page
-- [x] Test the registration functionality (code review completed, browser testing disabled)
+- [ ] Add Chart.js library to dashboard.php
+- [ ] Query user growth data (registrations over time)
+- [ ] Query schedule trends data (status distribution, schedules over time)
+- [ ] Query route popularity data (schedules per route)
+- [ ] Add new Analytics card above Overview in dashboard.php
+- [ ] Implement charts: User Growth Chart, Schedule Status Chart, Route Popularity Chart
